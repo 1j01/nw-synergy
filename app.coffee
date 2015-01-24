@@ -1,6 +1,6 @@
 
 $screens = $("<div class='screens'/>").appendTo("body")
-$screens.css position: "relative"
+$screens.css position: "relative", width: 0, height: 0
 
 scale = 1/7
 
