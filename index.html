@@ -45,6 +45,7 @@
 			tau = Math.PI*2
 			t = 0
 			rot_global = 0
+			lwidth = 0
 			do a = ->
 				t += 0.1
 				requestAnimationFrame a
@@ -65,7 +66,8 @@
 					rot1 = i1/colors.length * tau
 					rot2 = i2/colors.length * tau
 					
-					lwidth = 0.35
+					slowness = 50
+					lwidth = (lwidth*slowness + 0.35) / (slowness+1)
 					louter = 1
 					lcenter = 1 - lwidth/2
 					linner = 1 - lwidth
@@ -74,11 +76,25 @@
 					# main outer curve
 					ctx.arc(0, 0, louter, rot1, rot2, no)
 					# bump in (to inner curve)
-					ctx.arc(Math.cos(rot2)*lcenter, Math.sin(rot2)*lcenter, lwidth/2, rot1+tau/4, rot1-tau/4, yes)
+					ctx.arc(
+						Math.cos(rot2)*lcenter
+						Math.sin(rot2)*lcenter
+						lwidth/2
+						rot2
+						rot2+tau/2
+						yes
+					)
 					# main inner curve
 					ctx.arc(0, 0, linner, rot2, rot1, yes)
 					# bump out (to outer curve)
-					ctx.arc(Math.cos(rot1)*lcenter, Math.sin(rot1)*lcenter, lwidth/2*Math.min(t/10, 0.95), rot2+tau/4, rot2-tau/4, no)
+					ctx.arc(
+						Math.cos(rot1)*lcenter
+						Math.sin(rot1)*lcenter
+						lwidth/2 * 0.95 # * 0.95 makes it worse at high resolutions, but better at low resolutions
+						rot1+tau/2
+						rot1
+						no
+					)
 					
 					ctx.fillStyle = color
 					ctx.fill()
