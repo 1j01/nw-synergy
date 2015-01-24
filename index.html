@@ -19,9 +19,9 @@
 				-webkit-animation: slideIn 2.5s cubic-bezier(.05,.73,.24,1);
 			}
 			@-webkit-keyframes slideIn {
-				0% { transform: translateX(-175px) skewX(-50deg); }
-				80% { transform: translateX(-175px) skewX(-50deg); }
-				100% { transform: none; }
+				0% { transform: translateX(-175px) skewX(-50deg); opacity: 0; }
+				80% { transform: translateX(-175px) skewX(-50deg); opacity: 0; }
+				100% { transform: none; opacity: 1; }
 			}
 			img {
 				pointer-events: none;
@@ -35,7 +35,7 @@
 		</style>
 	</head>
 	<body>
-		<h1><canvas id="logo" width=50 height=50></canvas><img src="logotype.png"></h1>
+		<h1><canvas id="logo" width=50 height=50></canvas><img src="logotype.png" alt="Synergy"></h1>
 		
 		<script type="text/coffeescript">
 			$logo = $('#logo')
@@ -44,6 +44,7 @@
 			
 			tau = Math.PI*2
 			t = 0
+			rot_global = 0
 			do a = ->
 				t += 0.1
 				requestAnimationFrame a
@@ -53,7 +54,9 @@
 				ctx.save()
 				ctx.scale(w/2, h/2)
 				ctx.translate(1, 1)
-				rot_global = Math.pow(t, 0.5)
+				slowness = 50
+				turns = 1.52 # one whole turn plus half to get the colors in the right places plus a tiny bit to balance the bumps
+				rot_global = (rot_global*slowness + turns*tau) / (slowness+1)
 				ctx.rotate(rot_global)
 				colors = ["#5D7DBE", "#156260", "#3C97BA", "#98C53C"]
 				for color, i in colors
