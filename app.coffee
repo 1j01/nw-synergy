@@ -34,15 +34,11 @@ $Screen = (@screen, center)->
 	$dimensions.css
 		#fontSize: "1.3em"
 		fontWeight: "300"
-		textAlign: "center"
-		height: "1em"
-		lineHeight: "1"
-		margin: "auto"
-		position: "absolute"
-		top: 0
-		left: 0
-		bottom: 0
-		right: 0
+		height: "100%"
+		position: "relative"
+		display: "flex"
+		alignItems: "center"
+		justifyContent: "center"
 		pointerEvents: "none"
 	.text "#{@screen.bounds.width} × #{@screen.bounds.height}"
 	
