@@ -7,7 +7,7 @@
 		<script src="lib/coffee-script.js"></script>
 		<style>
 			* {
-				font-family: sans-serif;
+				font-family: "Open Sans", sans-serif;
 			}
 			h1, h1 * {
 				vertical-align: middle;
@@ -30,10 +30,19 @@
 				-webkit-user-select: none;
 			}
 			.screen {
-				background-color: #3C97BA;
+				/*box-shadow: 0px 0px 3px 1px rgba(0,0,0,0.2);*/
+				outline: 1px solid rgba(255,255,255,0.2);
+				
+				background-color: #004C64; /* the color of reserved operating system space */
+				color: white;
+			}
+			.screen .work-area {
+				background-color: #3C97BA; /* the main screen area color */
+				color: white;
 			}
 		</style>
 		<link rel="icon" href="icon.png">
+		<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400&amp;subset=latin" rel="stylesheet">
 	</head>
 	<body>
 		<h1><canvas id="logo" width=50 height=50></canvas><img src="logotype.png" alt="Synergy"></h1>
