@@ -1,0 +1,13 @@
+{
+   "name": "nw-synergy",
+   "version": "0.0.1",
+   "main": "index.html",
+   "description": "A node-webkit interface to synergy",
+   "scripts": {
+      "start": "nwbuild -r .",
+      "build": "nwbuild -b ."
+   },
+   "devDependencies": {
+      "node-webkit-builder": "^1.0.4"
+   }
+}
