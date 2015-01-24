@@ -2,7 +2,7 @@
 $screens = $("<div class='screens'/>").appendTo("body")
 $screens.css position: "relative"
 
-scale = 1/10
+scale = 1/7
 
 screens = []
 
@@ -18,16 +18,16 @@ $Screen = (screen)->
 		position: "absolute"
 		left: bounds.x * scale
 		top: bounds.y * scale
-		width: bounds.width * scale
-		height: bounds.height * scale
+		width: ~~(bounds.width * scale)
+		height: ~~(bounds.height * scale)
 		cursor: "move"
 	
 	$work_area.css
 		position: "absolute"
 		left: (work_area.x - bounds.x) * scale
 		top: (work_area.y - bounds.y) * scale
-		width: work_area.width * scale
-		height: work_area.height * scale
+		width: ~~(work_area.width * scale)
+		height: ~~(work_area.height * scale)
 		pointerEvents: "none"
 	
 	$dimensions.css
@@ -40,7 +40,7 @@ $Screen = (screen)->
 		pointerEvents: "none"
 	.text "#{screen.bounds.width} × #{screen.bounds.height}"
 	
-	$screen.draggable(snap: yes, snapTolerance: 5, opacity: 0.8, stack: ".screens")
+	$screen.draggable(snap: yes, snapTolerance: 5, opacity: 0.8, stack: ".screen")
 	# @TODO: use -webkit-drag and -webkit-dragging cursors
 	
 	screens.push $screen
@@ -74,6 +74,19 @@ else
 	new $Screen bounds: {x: 1920, y: 0, width: 1920, height: 1080}, work_area: {x: 1920, y: 0, width: 1920, height: 1040}
 	new $Screen bounds: {x: (1920*2-1366)/2, y: 1080, width: 1366, height: 768}, work_area: {x: (1920*2-1366)/2, y: 1080, width: 1366, height: 768-40}
 
+unless require?
+	add_screen = (width, height)->
+		x = ~~(Math.random()*5000)
+		y = ~~(Math.random()*5000)
+		new $Screen
+			bounds: {x, y, width, height}
+			work_area: {x, y, width, height: height-40}
+
+	add_screen 1366, 768
+	add_screen 1024, 600
+	add_screen 640, 480
+	add_screen 480, 320
+
 
 do window.onresize = ->
 	center = {}
@@ -85,6 +98,6 @@ do window.onresize = ->
 		center.y = ((center.y ? scy) + scy) / (screens.length)
 
 	$screens.css
-		left: "calc(50% - #{center.x * scale}px / 2)"
-		top: "calc(50% - #{center.y * scale}px / 2)"
+		left: ~~((window.innerWidth - center.x * scale) / 2)
+		top: ~~((window.innerHeight - center.y * scale) / 2)
 
