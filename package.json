@@ -3,6 +3,7 @@
    "version": "0.0.1",
    "main": "index.html",
    "description": "A node-webkit interface to synergy",
+   "tags": ["synergy", "keyboard", "mouse", "share", "sharing", "kvm", "multiboxing", "vnc", "input director", "share mouse", "open source"],
    "scripts": {
       "start": "nwbuild -r .",
       "build": "nwbuild -b ."
