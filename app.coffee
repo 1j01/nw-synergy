@@ -48,7 +48,7 @@ $Screen = (@screen, center)->
 	
 	ox = oy = 0
 	$screen.on "mousedown touchstart", (e)->
-		$screen.css zIndex: zIndexCounter++
+		$screen.css zIndex: ++zIndexCounter
 		ox = e.clientX - $screen.position().left
 		oy = e.clientY - $screen.position().top
 		
