@@ -4,8 +4,6 @@ $screens.css position: "relative"
 
 scale = 1/10
 
-zIndexCounter = 0
-
 screens = []
 
 $Screen = (screen)->
@@ -42,30 +40,8 @@ $Screen = (screen)->
 		pointerEvents: "none"
 	.text "#{screen.bounds.width} × #{screen.bounds.height}"
 	
-	ox = oy = 0
-	$screen.on "mousedown touchstart", (e)->
-		$screen.css zIndex: ++zIndexCounter
-		ox = e.clientX - $screen.position().left
-		oy = e.clientY - $screen.position().top
-		
-		$(window).on "mousemove touchmove", move = (e)->
-			x = e.clientX - ox
-			y = e.clientY - oy
-			$screen.css
-				position: "absolute"
-				left: x, top: y
-				cursor: "-webkit-dragging"
-		
-		# @TODO: actually cancel on touchcancel
-		$(window).on "mouseup touchend touchcancel", stop = (e)->
-			$(window).off "mousemove touchmove", move
-			$(window).off "mouseup touchend touchcancel", stop
-			x = e.clientX - ox
-			y = e.clientY - oy
-			$screen.css
-				position: "absolute"
-				left: x, top: y
-				cursor: "-webkit-drag"
+	$screen.draggable(snap: yes, snapTolerance: 5, opacity: 0.8, stack: ".screens")
+	# @TODO: use -webkit-drag and -webkit-dragging cursors
 	
 	screens.push $screen
 	$screen.screen = screen
