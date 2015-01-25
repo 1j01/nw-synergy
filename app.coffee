@@ -84,7 +84,6 @@ update_intersections = ->
 					height: height
 					zIndex: 50000
 					pointerEvents: "none"
-					animationDelay: "-#{Date.now?()}ms"
 
 
 
@@ -119,7 +118,7 @@ else
 unless require?
 	add_screen = (width, height)->
 		x = ~~(Math.random()*5000)
-		y = ~~(Math.random()*5000)
+		y = ~~(Math.random()*-1000)
 		new $Screen
 			bounds: {x, y, width, height}
 			work_area: {x, y, width, height: height-40}
@@ -129,6 +128,8 @@ unless require?
 	add_screen 640, 480
 	add_screen 480, 320
 
+
+update_intersections()
 
 do window.onresize = ->
 	center = {}
