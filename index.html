@@ -31,8 +31,6 @@
 				-webkit-user-select: none;
 			}
 			.screen {
-				/*box-shadow: 0px 0px 3px 1px rgba(0,0,0,0.2);
-				box-shadow: 0px 0px 1px 1px rgba(0,0,0,0.2) inset;*/
 				outline: 1px solid rgba(255,255,255,0.2);
 				
 				background-color: #004C64; /* the color of reserved operating system space */
@@ -41,6 +39,27 @@
 			.screen .work-area {
 				background-color: #3C97BA; /* the main screen area color */
 				color: white;
+			}
+			.overlap {
+				background-color: red;
+				opacity: 0.23;
+				box-shadow: 0px 0px 0px 1px #a00 inset;
+				background-size: 30px 30px;
+				background-image: -webkit-linear-gradient(
+					45deg,
+					rgba(0, 0, 0, 0.2) 25%,
+					rgba(0, 0, 0, 0.0) 25%,
+					rgba(0, 0, 0, 0.0) 50%,
+					rgba(0, 0, 0, 0.2) 50%,
+					rgba(0, 0, 0, 0.2) 75%,
+					rgba(0, 0, 0, 0.0) 75%,
+					rgba(0, 0, 0, 0.0)
+				);
+				-webkit-animation: stripe 0.5s linear infinite;
+			}
+			@-webkit-keyframes stripe {
+				from { background-position: 0 0; }
+				to   { background-position: 60px 30px; }
 			}
 		</style>
 		<link rel="icon" href="icon.png">

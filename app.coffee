@@ -1,6 +1,5 @@
 
 $.fn.rect = ->
-	#return @[0].getBoundingClientRect()
 	o = @offset()
 	o.width = @width()
 	o.height = @height()
@@ -67,13 +66,6 @@ update_intersections = ->
 		for $screen_b in screens when $screen_b isnt $screen_a
 			a = $screen_a.rect()
 			b = $screen_b.rect()
-			p = 5
-			# if (
-			# 	a.left-p <= b.right+p and
-			# 	b.left-p <= a.right+p and
-			# 	a.top-p <= b.bottom+p and
-			# 	b.top-p <= a.bottom+p
-			# )
 			left = Math.max(a.left, b.left)
 			right = Math.min(a.right, b.right)
 			bottom = Math.min(a.bottom, b.bottom)
@@ -85,15 +77,15 @@ update_intersections = ->
 				ox = parseFloat($screen_a.css("left")) - a.left
 				oy = parseFloat($screen_a.css("top")) - a.top
 				$("<div class='overlap'>").appendTo($screens).css
-					background: "red"
-					opacity: 0.2
 					position: "absolute"
 					left: left + ox
 					top: top + oy
 					width: width
 					height: height
-					zIndex: 500
+					zIndex: 50000
 					pointerEvents: "none"
+					animationDelay: "-#{Date.now?()}ms"
+
 
 
 
