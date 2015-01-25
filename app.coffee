@@ -1,4 +1,15 @@
 
+$.fn.rect = ->
+	#return @[0].getBoundingClientRect()
+	o = @offset()
+	o.width = @width()
+	o.height = @height()
+	o.right = o.left + o.width
+	o.bottom = o.top + o.height
+	o
+	# maybe these would be outerWidth/Height and/or offsetParent
+	# for a more generally useful helper function
+
 $screens = $("<div class='screens'/>").appendTo("body")
 $screens.css position: "relative", width: 0, height: 0
 
@@ -20,7 +31,7 @@ $Screen = (screen)->
 		top: bounds.y * scale
 		width: ~~(bounds.width * scale)
 		height: ~~(bounds.height * scale)
-		cursor: "move"
+		cursor: "move" # @TODO: use -webkit-drag and -webkit-dragging cursors
 	
 	$work_area.css
 		position: "absolute"
@@ -41,11 +52,47 @@ $Screen = (screen)->
 	.text "#{screen.bounds.width} × #{screen.bounds.height}"
 	
 	$screen.draggable(snap: yes, snapTolerance: 5, opacity: 0.8, stack: ".screen")
-	# @TODO: use -webkit-drag and -webkit-dragging cursors
+	$screen.on "drag stop", update_intersections
 	
 	screens.push $screen
 	$screen.screen = screen
 	$screen
+
+update_intersections = ->
+	$(".overlap").remove()
+	for $screen_a in screens
+		for $screen_b in screens when $screen_b isnt $screen_a
+			a = $screen_a.rect()
+			b = $screen_b.rect()
+			p = 5
+			# if (
+			# 	a.left-p <= b.right+p and
+			# 	b.left-p <= a.right+p and
+			# 	a.top-p <= b.bottom+p and
+			# 	b.top-p <= a.bottom+p
+			# )
+			left = Math.max(a.left, b.left)
+			right = Math.min(a.right, b.right)
+			bottom = Math.min(a.bottom, b.bottom)
+			top = Math.max(a.top, b.top)
+			width = right - left
+			height = bottom - top
+			
+			if width > 0 and height > 0
+				ox = parseFloat($screen_a.css("left")) - a.left
+				oy = parseFloat($screen_a.css("top")) - a.top
+				$("<div class='overlap'>").appendTo($screens).css
+					background: "red"
+					opacity: 0.2
+					position: "absolute"
+					left: left + ox
+					top: top + oy
+					width: width
+					height: height
+					zIndex: 500
+					pointerEvents: "none"
+
+
 
 if require?
 
