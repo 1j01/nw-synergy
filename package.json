@@ -2,8 +2,11 @@
    "name": "nw-synergy",
    "version": "0.0.1",
    "main": "index.html",
-   "description": "A node-webkit interface to synergy",
-   "tags": ["synergy", "keyboard", "mouse", "share", "sharing", "kvm", "multiboxing", "vnc", "input director", "share mouse", "open source"],
+   "description": "An NW.js interface to synergy",
+   "tags": [
+     "synergy", "keyboard", "mouse", "share", "sharing", "kvm", "multiboxing", "vnc", "input director", "share mouse",
+     "node-webkit", "nw.js", "nwjs", "nwjs.io", "gui", "app", "interface"
+   ],
    "scripts": {
       "start": "nwbuild -r .",
       "build": "nwbuild -b ."
