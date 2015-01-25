@@ -60,6 +60,34 @@ $Screen = (screen)->
 	$screen.screen = screen
 	$screen
 
+$WindowOnScreen = (window, $screen)->
+	$window = $("<div class='window'/>").appendTo($screen)
+	
+	{bounds, work_area} = $screen.screen
+	
+	update = ->
+		nw_win = nwDispatcher?.nwGui?.Window?.get?(window)
+		
+		if nw_win
+			{x, y, width, height} = nw_win
+		else
+			x = window.screenX
+			y = window.screenY
+			width = window.outerWidth
+			height = window.outerHeight
+		
+		$window.css
+			position: "absolute"
+			left: (x - bounds.x) * scale
+			top: (y - bounds.y) * scale
+			width: ~~(width * scale)
+			height: ~~(height * scale)
+			pointerEvents: "none"
+
+	setInterval update, 50
+	
+	$window
+
 update_intersections = ->
 	$(".overlap").remove()
 	for $screen_a in screens
@@ -128,6 +156,9 @@ unless require?
 	add_screen 640, 480
 	add_screen 480, 320
 
+
+for $screen in screens
+	new $WindowOnScreen(window, $screen)
 
 update_intersections()
 
