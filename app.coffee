@@ -52,7 +52,10 @@ $Screen = (screen)->
 	.text "#{screen.bounds.width} × #{screen.bounds.height}"
 	
 	$screen.draggable(snap: yes, snapTolerance: 5, opacity: 0.8, stack: ".screen")
-	$screen.on "drag stop", update_intersections
+	$screen.on "drag", ->
+		update_intersections()
+		# jQuery might not have moved the elements yet, so hackily try again in a bit
+		setTimeout update_intersections, 1
 	
 	screens.push $screen
 	$screen.screen = screen
