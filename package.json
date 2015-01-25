@@ -10,5 +10,8 @@
    },
    "devDependencies": {
       "node-webkit-builder": "^1.0.4"
+   },
+   "window": {
+     "icon": "icon50.png"
    }
 }
