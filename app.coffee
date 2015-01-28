@@ -89,11 +89,12 @@ $WindowOnScreen = (window, $screen)->
 	$window
 
 update_intersections = ->
-	$(".overlap").remove()
+	$(".overlap, .edge").remove()
 	for $screen_a in screens
 		for $screen_b in screens when $screen_b isnt $screen_a
 			a = $screen_a.rect()
 			b = $screen_b.rect()
+			
 			left = Math.max(a.left, b.left)
 			right = Math.min(a.right, b.right)
 			bottom = Math.min(a.bottom, b.bottom)
@@ -101,9 +102,10 @@ update_intersections = ->
 			width = right - left
 			height = bottom - top
 			
+			ox = parseFloat($screen_a.css("left")) - a.left
+			oy = parseFloat($screen_a.css("top")) - a.top
+			
 			if width > 0 and height > 0
-				ox = parseFloat($screen_a.css("left")) - a.left
-				oy = parseFloat($screen_a.css("top")) - a.top
 				$("<div class='overlap'>").appendTo($screens).css
 					position: "absolute"
 					left: left + ox
@@ -112,6 +114,25 @@ update_intersections = ->
 					height: height
 					zIndex: 50000
 					pointerEvents: "none"
+			
+			edge = ($screen_a, a, a_side, $screen_b, b, b_side)->
+				$("<div class='edge'>").appendTo($screens).css
+					position: "absolute"
+					left: left + ox
+					top: top + oy
+					width: width
+					height: height
+					zIndex: 50001
+					pointerEvents: "none"
+			
+			touching = (x1, x2)->
+				Math.abs(x1 - x2) <= 1 and
+				(width > 1 or height > 1)
+			
+			edge $screen_a, a, "left", $screen_b, b, "right" if touching a.left, b.right
+			edge $screen_a, a, "right", $screen_b, b, "left" if touching a.right, b.left
+			edge $screen_a, a, "top", $screen_b, b, "bottom" if touching a.top, b.bottom
+			edge $screen_a, a, "bottom", $screen_b, b, "top" if touching a.bottom, b.top
 
 
 
