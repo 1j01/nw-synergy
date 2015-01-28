@@ -37,7 +37,12 @@
     "nw": "0.12.0-alpha2",
     "sgc": "^1.0.0"
   },
+  "devDependencies": {
+    "chokidar": "^0.12.5"
+  },
   "window": {
-    "icon": "images/icon50.png"
+    "icon": "images/icon50.png",
+    "toolbar": false,
+    "show": false
   }
 }
