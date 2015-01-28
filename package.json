@@ -8,11 +8,10 @@
      "node-webkit", "nw.js", "nwjs", "nwjs.io", "gui", "app", "interface"
    ],
    "scripts": {
-      "start": "nwbuild -r .",
-      "build": "nwbuild -b ."
+      "start": "nw"
    },
-   "devDependencies": {
-      "node-webkit-builder": "^1.0.4"
+   "dependencies": {
+      "nw": "0.12.0-alpha2"
    },
    "window": {
      "icon": "images/icon50.png"
