@@ -116,18 +116,26 @@ update_intersections = ->
 					pointerEvents: "none"
 			
 			edge = ($screen_a, a, a_side, $screen_b, b, b_side)->
+				inset = 1 # shrink the edge lengthwise for display
+				# to make styling easier when shadows extend from the element
+				# since it looks bad when it goes beyond the edge lengthwise
+				is_vertical_edge = a_side in ["left", "right"]
+				is_horizontal_edge = a_side in ["top", "bottom"]
 				$("<div class='edge'>").appendTo($screens).css
 					position: "absolute"
-					left: left + ox
-					top: top + oy
-					width: width
-					height: height
+					left: left + ox + (inset * is_horizontal_edge)
+					top: top + oy + (inset * is_vertical_edge)
+					width: width - (inset * 2 * is_horizontal_edge)
+					height: height - (inset * 2 * is_vertical_edge)
 					zIndex: 50001
 					pointerEvents: "none"
 			
 			touching = (x1, x2)->
+				# x1 = x2, give or take a pixel
 				Math.abs(x1 - x2) <= 1 and
+				# ONE of the bounds of the intersection has some length
 				(width > 1 or height > 1)
+				# the intersection can have no area, that's fine for an edge
 			
 			edge $screen_a, a, "left", $screen_b, b, "right" if touching a.left, b.right
 			edge $screen_a, a, "right", $screen_b, b, "left" if touching a.right, b.left
