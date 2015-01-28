@@ -1,19 +1,43 @@
 {
-   "name": "nw-synergy",
-   "version": "0.0.1",
-   "main": "index.html",
-   "description": "An NW.js interface to synergy",
-   "tags": [
-     "synergy", "keyboard", "mouse", "share", "sharing", "kvm", "multiboxing", "vnc", "input director", "share mouse",
-     "node-webkit", "nw.js", "nwjs", "nwjs.io", "gui", "app", "interface"
-   ],
-   "scripts": {
-      "start": "nw"
-   },
-   "dependencies": {
-      "nw": "0.12.0-alpha2"
-   },
-   "window": {
-     "icon": "images/icon50.png"
-   }
+  "name": "nw-synergy",
+  "description": "An NW.js interface to synergy",
+  "version": "0.0.2",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/1j01/nw-synergy.git"
+  },
+  "bugs": {
+    "url": "http://github.com/1j01/nw-synergy/issues"
+  },
+  "license": "MIT",
+  "keywords": [
+    "synergy",
+    "keyboard",
+    "mouse",
+    "share",
+    "sharing",
+    "kvm",
+    "multiboxing",
+    "vnc",
+    "input director",
+    "share mouse",
+    "node-webkit",
+    "nw.js",
+    "nwjs",
+    "nwjs.io",
+    "gui",
+    "app",
+    "interface"
+  ],
+  "main": "index.html",
+  "scripts": {
+    "start": "nw"
+  },
+  "dependencies": {
+    "nw": "0.12.0-alpha2",
+    "sgc": "^1.0.0"
+  },
+  "window": {
+    "icon": "images/icon50.png"
+  }
 }

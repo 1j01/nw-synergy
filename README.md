@@ -11,6 +11,8 @@ It consists so far of...
 
 * Nice looking screen intersections
 
+* [A module to read and write Synergy's configuration files](https://github.com/1j01/node-sgc)
+
 
 ## Run
 
