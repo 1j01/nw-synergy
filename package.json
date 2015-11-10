@@ -1,7 +1,7 @@
 {
   "name": "nw-synergy",
   "description": "An NW.js interface to synergy",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "repository": {
     "type": "git",
     "url": "http://github.com/1j01/nw-synergy.git"
@@ -35,10 +35,8 @@
   },
   "dependencies": {
     "nw": "0.12.0-alpha2",
-    "sgc": "^1.0.0"
-  },
-  "devDependencies": {
-    "chokidar": "^0.12.5"
+    "sgc": "^1.0.0",
+    "nw-dev": "^1.2.0"
   },
   "window": {
     "icon": "images/icon50.png",

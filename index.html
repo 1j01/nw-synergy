@@ -78,7 +78,7 @@
 	<body>
 		<h1><canvas id="logo" width=50 height=50></canvas><img src="images/logotype.png" alt="Synergy"></h1>
 		
-		<script type="text/coffeescript" src="dev.coffee"></script>
+		<script src="node_modules/nw-dev/lib/dev.js"></script>
 		<script type="text/coffeescript">
 			$logo = $('#logo')
 			canvas = $logo.get(0)
@@ -144,5 +144,11 @@
 				ctx.restore()
 		</script>
 		<script type="text/coffeescript" src="app.coffee"></script>
+		<script type="text/coffeescript">
+			nw = require "nw.gui"
+			nwin = nw.Window.get()
+			nwin.show() unless nwin.shown
+			nwin.shown = yes
+		</script>
 	</body>
 </html>

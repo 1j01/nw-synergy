@@ -14,13 +14,15 @@ It consists so far of...
 * [A module to read and write Synergy's configuration files](https://github.com/1j01/node-sgc)
 
 
-## Run
+## Run / Dev
 
 1. Have [Node.js](http://nodejs.org/)
 
 2. Run `npm install` in the project directory
 
 3. Run `npm start` in the project directory
+
+It'll auto-reload with [nw-dev](https://www.npmjs.com/package/nw-dev).
 
 Or just check out [the online demo](http://1j01.github.io/nw-synergy/
 	) without much monitor detection
