@@ -16,6 +16,38 @@ scale = 1/7
 
 screens = []
 
+# system_colors = ["#3C97BA", "#156260", "#5D7DBE", "#ff0", "#f0f", "#f55"]
+# system_colors = ["#5D7DBE", "#156260", "#ff0", "#f0f", "#f55"]
+system_colors = ["#9AD9E9", "#B5E637", "#FE7E34", "#C8BFE6"]
+# TODO: bikeshed on a color palette and/or use one of those unique color modules
+system_colors_index = 0
+
+class System
+	constructor: ($screens)->
+		@color = system_colors[system_colors_index++]
+		@name = "Computer " + system_colors_index
+		@$screens = []
+		if $screens
+			@add $screen for $screen in $screens
+	add: ($screen)->
+		@$screens.push($screen)
+		$screen.find(".work-area").css(backgroundColor: @color, color: "rgba(0, 0, 0, 0.5)", padding: 5).text(@name)
+		$screen.css(color: "black")
+		$screen.system = @
+	dragBy: ($handle_screen)->
+		# FIXME: snaps to other screens of the same system
+		# (at their original positions at the start of the drag)
+		# TODO: actually have a position for the System in meta screen space
+		# and update that and update the elements from that
+		# (If this were in React I would have just done this the right way)
+		# FIXME: pixel inaccuracy issues because it's done the wrong way
+		handle_position = $handle_screen.position()
+		for $screen in @$screens #when $screen isnt $handle_screen
+			$screen.css(
+				left: ~~(handle_position.left + ($screen.screen.bounds.x - $handle_screen.screen.bounds.x) * scale)
+				top: ~~(handle_position.top + ($screen.screen.bounds.y - $handle_screen.screen.bounds.y) * scale)
+			)
+
 $Screen = (screen)->
 	
 	$screen = $("<div class='screen'/>").appendTo($screens)
@@ -50,11 +82,17 @@ $Screen = (screen)->
 		pointerEvents: "none"
 	.text "#{screen.bounds.width} × #{screen.bounds.height}"
 	
+	# TODO: take into account the whole System's shape when snapping
 	$screen.draggable(snap: yes, snapTolerance: 5, opacity: 0.8, stack: ".screen")
 	$screen.on "drag", ->
-		update_intersections()
-		# jQuery might not have moved the elements yet, so hackily try again in a bit
-		setTimeout update_intersections, 1
+		update = ->
+			$screen.system?.dragBy($screen)
+			update_intersections()
+		# HACK: draggable() might not have actually moved the elements yet, so try again in a bit
+		# we need mousemove so that other screens don't lag behind the directly dragged screen
+		$(window).one "mousemove", update
+		# we need setTimeout for the end of the drag
+		setTimeout update, 1
 	
 	screens.push $screen
 	$screen.screen = screen
@@ -143,18 +181,20 @@ update_intersections = ->
 			edge $screen_a, a, "bottom", $screen_b, b, "top" if touching a.bottom, b.top
 
 
-
+demo_mode = on # not `not require?` for now
 
 if require?
 
 	{Screen} = require 'nw.gui'; Screen.Init()
 	{Screen} = require 'nw.gui'# (This is stupid)
 
+	system = new System()
 	for screen in Screen.screens
-		new $Screen(screen)
+		system.add(new $Screen(screen))
 
 else if (s = window.screen)?
-	new $Screen
+	system = new System()
+	system.add new $Screen
 		bounds:
 			x: s.availLeft
 			y: s.availTop
@@ -167,27 +207,45 @@ else if (s = window.screen)?
 			height: s.availHeight
 	
 else
-	
 	new $Screen bounds: {x: 0, y: 0, width: 1920, height: 1080}, work_area: {x: 0, y: 0, width: 1920, height: 1040}
 	new $Screen bounds: {x: 1920, y: 0, width: 1920, height: 1080}, work_area: {x: 1920, y: 0, width: 1920, height: 1040}
 	new $Screen bounds: {x: (1920*2-1366)/2, y: 1080, width: 1366, height: 768}, work_area: {x: (1920*2-1366)/2, y: 1080, width: 1366, height: 768-40}
 
-unless require?
-	add_screen = (width, height)->
-		x = ~~(Math.random()*5000)
-		y = ~~(Math.random()*-1000)
+for $screen in screens
+	new $WindowOnScreen(window, $screen)
+
+if demo_mode
+	new_screen = (width, height, x, y)->
+		x ?= ~~(Math.random()*5000)
+		y ?= ~~(Math.random()*-1000)
 		new $Screen
 			bounds: {x, y, width, height}
 			work_area: {x, y, width, height: height-40}
+	
+	# new_screen 1366, 768
+	# new_screen 1024, 600
+	# new_screen 640, 480
+	# new_screen 480, 320
+	
+	# XXX: I'm defining the positions of screens in these systems so that they don't overlap
+	# which won't work in a real-world scenario
+	# did I mention this is done the wrong way?
+	new System [
+		new_screen(1024, 600, 0, -600)
+		# new_screen(640, 480, 1024, -480)
+		# new_screen(480, 320, 1024+640, -768)
+		new_screen(1920, 1080, 1024, -1080)
+	]
+	new System [
+		new_screen(1366, 768, 0, 0)
+		# new_screen(1366, 768, 1366, 0)
+	]
+	new System [
+		# new_screen(1366, 768, 0, 768)
+		# new_screen(1366, 768, 1366, 768)
+		new_screen(1366, 768, 1366, 0)
+	]
 
-	add_screen 1366, 768
-	add_screen 1024, 600
-	add_screen 640, 480
-	add_screen 480, 320
-
-
-for $screen in screens
-	new $WindowOnScreen(window, $screen)
 
 update_intersections()
 
